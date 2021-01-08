@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
 
+
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         return intent;
