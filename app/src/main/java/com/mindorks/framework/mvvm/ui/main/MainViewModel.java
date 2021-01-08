@@ -118,7 +118,7 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     public void logout() {
         setIsLoading(true);
-        getCompositeDisposable().add(
+       /* getCompositeDisposable().add(
                 getDataManager().getAllOptions().flatMap(optionList -> getDataManager().deleteOptions(optionList)).flatMap(aBoolean -> {
                     Log.i(TAG, "All questions are deleted " + aBoolean);
                     return getDataManager().getAllQuestions();
@@ -127,7 +127,7 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
                 }, throwable -> {
                     getNavigator().handleError(throwable);
                 })
-        );
+        );*/
         getCompositeDisposable().add(getDataManager().doLogoutApiCall()
                 .doOnSuccess(response -> {
                     getDataManager().setUserAsLoggedOut();
