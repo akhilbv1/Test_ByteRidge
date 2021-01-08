@@ -230,9 +230,25 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Integer> deletAllQuestions(List<Question> questionList) {
+        return mDbHelper.deletAllQuestions(questionList);
+    }
+
+    @Override
+    public Observable<Integer> deleteAllOptions(List<Option> optionList) {
+        return mDbHelper.deleteAllOptions(optionList);
+    }
+
+    @Override
+    public Observable<List<Option>> getAllOptions() {
+        return mDbHelper.getAllOptions();
+    }
+
+    @Override
     public Observable<Boolean> seedDatabaseOptions() {
         return mDbHelper.isOptionEmpty()
                 .concatMap(isEmpty -> {
+                    Log.d(TAG,"seedDatabaseOptions isEmpty "+isEmpty);
                     if (isEmpty) {
                         Type type = new TypeToken<List<Option>>() {
                         }.getType();
@@ -247,6 +263,7 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseQuestions() {
         return mDbHelper.isQuestionEmpty()
                 .concatMap(isEmpty -> {
+                    Log.d(TAG,"seedDatabaseQuestions isEmpty "+isEmpty);
                     if (isEmpty) {
                         Type type = $Gson$Types.newParameterizedTypeWithOwner(null, List.class, Question.class);
                         List<Question> questionList = mGson
@@ -255,6 +272,16 @@ public class AppDataManager implements DataManager {
                     }
                     return Observable.just(false);
                 });
+    }
+
+    @Override
+    public Observable<Integer> deleteQuestionsAndOptions(List<Question> questions) {
+        return mDbHelper.deletAllQuestions(questions);
+    }
+
+    @Override
+    public Observable<Integer> deleteOptions(List<Option> optionList) {
+        return mDbHelper.deleteAllOptions(optionList);
     }
 
     @Override

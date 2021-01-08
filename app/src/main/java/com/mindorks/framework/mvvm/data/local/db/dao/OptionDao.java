@@ -17,10 +17,13 @@
 package com.mindorks.framework.mvvm.data.local.db.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.mindorks.framework.mvvm.data.model.db.Option;
+import com.mindorks.framework.mvvm.data.model.db.Question;
+
 import java.util.List;
 
 import io.reactivex.Single;
@@ -40,6 +43,13 @@ public interface OptionDao {
     @Query("SELECT * FROM options")
     Single<List<Option>> loadAll();
 
+
+    @Query("SELECT * FROM options")
+    List<Option> loadAllOptions();
+
     @Query("SELECT * FROM options WHERE question_id = :questionId")
     Single<List<Option>> loadAllByQuestionId(Long questionId);
+
+    @Query("DELETE FROM OPTIONS")
+    int deleteAl();
 }

@@ -29,7 +29,7 @@ import com.mindorks.framework.mvvm.data.model.db.User;
  * Created by amitshekhar on 07/07/17.
  */
 
-@Database(entities = {User.class, Question.class, Option.class}, version = 2)
+@Database(entities = {User.class, Question.class, Option.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract OptionDao optionDao();

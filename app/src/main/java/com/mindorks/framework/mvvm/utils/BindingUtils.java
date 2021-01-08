@@ -65,7 +65,7 @@ public final class BindingUtils {
             if (mQuestionList != null) {
                 mCardsContainerView.removeAllViews();
                 for (QuestionCardData question : mQuestionList) {
-                    if (question != null && question.options != null && question.options.size() == 3) {
+                    if (question != null && question.options != null) {
                         mCardsContainerView.addView(new QuestionCard(question));
                     }
                 }

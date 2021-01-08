@@ -16,18 +16,20 @@
 
 package com.mindorks.framework.mvvm.ui.main;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableList;
-import android.text.TextUtils;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.mindorks.framework.mvvm.data.DataManager;
 import com.mindorks.framework.mvvm.data.model.others.QuestionCardData;
 import com.mindorks.framework.mvvm.ui.base.BaseViewModel;
 import com.mindorks.framework.mvvm.utils.rx.SchedulerProvider;
+
 import java.util.List;
 
 /**
@@ -94,6 +96,9 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
         return userProfilePicUrl;
     }
 
+
+
+
     public void loadQuestionCards() {
         getCompositeDisposable().add(getDataManager()
                 .getQuestionCardData()
@@ -113,8 +118,20 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     public void logout() {
         setIsLoading(true);
+        getCompositeDisposable().add(
+                getDataManager().getAllOptions().flatMap(optionList -> getDataManager().deleteOptions(optionList)).flatMap(aBoolean -> {
+                    Log.i(TAG, "All questions are deleted " + aBoolean);
+                    return getDataManager().getAllQuestions();
+                }).flatMap(questions -> getDataManager().deleteQuestionsAndOptions(questions)).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aboolean -> {
+                    Log.i(TAG, "All Options are deleted " + aboolean);
+                }, throwable -> {
+                    getNavigator().handleError(throwable);
+                })
+        );
         getCompositeDisposable().add(getDataManager().doLogoutApiCall()
-                .doOnSuccess(response -> getDataManager().setUserAsLoggedOut())
+                .doOnSuccess(response -> {
+                    getDataManager().setUserAsLoggedOut();
+                })
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(response -> {

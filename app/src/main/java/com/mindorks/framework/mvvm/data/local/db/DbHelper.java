@@ -47,4 +47,10 @@ public interface DbHelper {
     Observable<Boolean> saveQuestion(Question question);
 
     Observable<Boolean> saveQuestionList(List<Question> questionList);
+
+    Observable<Integer> deletAllQuestions(List<Question> questionList);
+
+    Observable<Integer> deleteAllOptions(List<Option> optionList);
+
+    Observable<List<Option>> getAllOptions();
 }

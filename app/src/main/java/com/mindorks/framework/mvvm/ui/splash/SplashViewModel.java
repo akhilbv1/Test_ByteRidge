@@ -16,6 +16,8 @@
 
 package com.mindorks.framework.mvvm.ui.splash;
 
+import android.util.Log;
+
 import com.mindorks.framework.mvvm.data.DataManager;
 import com.mindorks.framework.mvvm.ui.base.BaseViewModel;
 import com.mindorks.framework.mvvm.utils.rx.SchedulerProvider;

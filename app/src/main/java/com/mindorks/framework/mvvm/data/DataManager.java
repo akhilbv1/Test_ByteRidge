@@ -18,6 +18,8 @@ package com.mindorks.framework.mvvm.data;
 
 import com.mindorks.framework.mvvm.data.local.db.DbHelper;
 import com.mindorks.framework.mvvm.data.local.prefs.PreferencesHelper;
+import com.mindorks.framework.mvvm.data.model.db.Option;
+import com.mindorks.framework.mvvm.data.model.db.Question;
 import com.mindorks.framework.mvvm.data.model.others.QuestionCardData;
 import com.mindorks.framework.mvvm.data.remote.ApiHelper;
 import io.reactivex.Observable;
@@ -34,6 +36,10 @@ public interface DataManager extends DbHelper, PreferencesHelper, ApiHelper {
     Observable<Boolean> seedDatabaseOptions();
 
     Observable<Boolean> seedDatabaseQuestions();
+
+    Observable<Integer> deleteQuestionsAndOptions(List<Question> questions);
+
+    Observable<Integer> deleteOptions(List<Option> optionList);
 
     void setUserAsLoggedOut();
 

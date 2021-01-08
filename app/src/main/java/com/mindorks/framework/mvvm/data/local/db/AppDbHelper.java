@@ -16,14 +16,19 @@
 
 package com.mindorks.framework.mvvm.data.local.db;
 
+import android.util.Log;
+
 import com.mindorks.framework.mvvm.data.model.db.Option;
 import com.mindorks.framework.mvvm.data.model.db.Question;
 import com.mindorks.framework.mvvm.data.model.db.User;
-import io.reactivex.Observable;
+
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
 
 /**
  * Created by amitshekhar on 07/07/17.
@@ -33,6 +38,8 @@ import javax.inject.Singleton;
 public class AppDbHelper implements DbHelper {
 
     private final AppDatabase mAppDatabase;
+
+    private final String TAG = AppDbHelper.class.getSimpleName();
 
     @Inject
     public AppDbHelper(AppDatabase appDatabase) {
@@ -123,8 +130,41 @@ public class AppDbHelper implements DbHelper {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+                for (Question obj : questionList) {
+                    Log.d(TAG, "Questions are:- " + obj.questionText);
+                }
                 mAppDatabase.questionDao().insertAll(questionList);
                 return true;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Integer> deletAllQuestions(List<Question> questionList) {
+        return Observable.fromCallable(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return mAppDatabase.questionDao().deleteAl();
+            }
+        });
+    }
+
+    @Override
+    public Observable<Integer> deleteAllOptions(List<Option> optionList) {
+        return Observable.fromCallable(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return mAppDatabase.optionDao().deleteAl();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Option>> getAllOptions() {
+        return Observable.fromCallable(new Callable<List<Option>>() {
+            @Override
+            public List<Option> call() throws Exception {
+                return mAppDatabase.optionDao().loadAllOptions();
             }
         });
     }

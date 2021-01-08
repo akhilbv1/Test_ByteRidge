@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void handleError(Throwable throwable) {
         // handle error
+        throwable.printStackTrace();
     }
 
     @Override

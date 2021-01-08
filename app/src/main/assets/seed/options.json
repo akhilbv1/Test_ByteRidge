@@ -73,5 +73,26 @@
     "option_text": "Google",
     "question_id": 7,
     "is_correct": false
+  },
+  {
+    "option_text": "Thar",
+    "question_id": 8,
+    "is_correct": false
+  },
+  {
+    "option_text": "Kalahari",
+    "question_id": 8,
+    "is_correct": false
+  },
+  {
+    "option_text": "Sahara",
+    "question_id": 8,
+    "is_correct": true
+  }
+,
+  {
+    "option_text": "Sonoran",
+    "question_id": 8,
+    "is_correct": false
   }
 ]
