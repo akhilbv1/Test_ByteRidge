@@ -51,4 +51,9 @@ public class Question {
     @SerializedName("updated_at")
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
+
+    @Expose
+    @SerializedName("hasAnswered")
+    @ColumnInfo(name = "hasAnswered",defaultValue = "false")
+    public Boolean hasAnswered ;
 }

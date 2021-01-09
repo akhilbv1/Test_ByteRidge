@@ -13,121 +13,142 @@
   ~  See the License for the specific language governing permissions and
   ~  limitations under the License
   -->
+<layout>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center_horizontal"
-    card_view:cardBackgroundColor="@color/white"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
-    card_view:cardUseCompatPadding="true">
+    <data>
 
-    <LinearLayout
+        <import type="android.view.View" />
+
+        <variable
+            name="bgColor"
+            type="Integer" />
+
+        <variable
+            name="questionCard"
+            type="com.mindorks.framework.mvvm.data.model.others.QuestionCardData" />
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="32dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <com.androidnetworking.widget.ANImageView
-                android:id="@+id/iv_pic"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:scaleType="centerCrop" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="✓"
-                    android:textSize="36sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-6dp"
-                    android:text="✓"
-                    android:textAllCaps="true"
-                    android:textSize="14sp" />
+                <com.androidnetworking.widget.ANImageView
+                    android:id="@+id/iv_pic"
+                    imageUrl='@{questionCard.question.imgUrl}'
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@color/translucent_white"
-                    android:orientation="vertical"
-                    android:paddingBottom="3dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="3dp">
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_question_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textSize="20sp" />
+                        android:text="✓"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-6dp"
+                        android:text="✓"
+                        android:textAllCaps="true"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/translucent_white"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/tv_question_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text='@{questionCard.question.questionText}'
+                            android:textSize="20sp" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <Button
-            android:id="@+id/btn_option_1"
-            style="@style/Button.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:visibility="invisible"
-            android:minHeight="44dp" />
+            <Button
+                android:id="@+id/btn_option_1"
+                style="@style/Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="44dp"
+                android:text='@{questionCard.options[0].optionText ??""}'
+                android:visibility='@{questionCard.options[0]!=null ? View.VISIBLE : View.INVISIBLE }' />
 
-        <Button
-            android:id="@+id/btn_option_2"
-            style="@style/Button.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:visibility="invisible"
-            android:minHeight="44dp" />
+            <Button
+                android:id="@+id/btn_option_2"
+                style="@style/Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="44dp"
+                android:text='@{questionCard.options[1].optionText ??""}'
+                android:visibility='@{questionCard.options[1]!=null ? View.VISIBLE : View.INVISIBLE }' />
 
-        <Button
-            android:id="@+id/btn_option_3"
-            style="@style/Button.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:visibility="invisible"
-            android:minHeight="44dp" />
+            <Button
+                android:id="@+id/btn_option_3"
+                style="@style/Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="44dp"
+                android:text='@{questionCard.options[2].optionText ??""}'
+                android:visibility='@{questionCard.options[2]!=null ? View.VISIBLE : View.INVISIBLE }' />
 
-        <Button
-            android:id="@+id/btn_option_4"
-            style="@style/Button.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:visibility="invisible"
-            android:minHeight="44dp" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/btn_option_4"
+                style="@style/Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="44dp"
+                android:text='@{questionCard.options[3].optionText ??""}'
+                android:visibility='@{questionCard.options[3]!=null ? View.VISIBLE : View.INVISIBLE }' />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -26,6 +26,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mindorks.framework.mvvm.data.DataManager;
+import com.mindorks.framework.mvvm.data.model.db.Question;
 import com.mindorks.framework.mvvm.data.model.others.QuestionCardData;
 import com.mindorks.framework.mvvm.ui.base.BaseViewModel;
 import com.mindorks.framework.mvvm.utils.rx.SchedulerProvider;
@@ -50,9 +51,12 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     private final ObservableField<String> userEmail = new ObservableField<>();
 
+    private final ObservableField<String> questionsAnswered = new ObservableField<>();
+
     private final ObservableField<String> userName = new ObservableField<>();
 
     private final ObservableField<String> userProfilePicUrl = new ObservableField<>();
+
 
     private int action = NO_ACTION;
 
@@ -68,6 +72,10 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     public ObservableField<String> getAppVersion() {
         return appVersion;
+    }
+
+    public ObservableField<String> getQuestionsAnswered() {
+        return questionsAnswered;
     }
 
     public LiveData<List<QuestionCardData>> getQuestionCardData() {
@@ -97,11 +105,10 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
     }
 
 
-
-
     public void loadQuestionCards() {
-        getCompositeDisposable().add(getDataManager()
-                .getQuestionCardData()
+        questionsAnswered.set("Questions Answered:0/6");
+        getCompositeDisposable().add(getDataManager().resetAllQuestions()
+                .flatMap(aBoolean -> getDataManager().getQuestionCardData())
                 .doOnNext(list -> Log.d(TAG, "loadQuestionCards: " + list.size()))
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
@@ -116,18 +123,36 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
                 }));
     }
 
-    public void logout() {
-        setIsLoading(true);
-       /* getCompositeDisposable().add(
-                getDataManager().getAllOptions().flatMap(optionList -> getDataManager().deleteOptions(optionList)).flatMap(aBoolean -> {
-                    Log.i(TAG, "All questions are deleted " + aBoolean);
-                    return getDataManager().getAllQuestions();
-                }).flatMap(questions -> getDataManager().deleteQuestionsAndOptions(questions)).subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui()).subscribe(aboolean -> {
-                    Log.i(TAG, "All Options are deleted " + aboolean);
+
+    public void saveQuestionAsAnswered(Question question) {
+        getCompositeDisposable().add(getDataManager().saveAnsweredQuestion(question).
+                subscribeOn(getSchedulerProvider().io()).
+                observeOn(getSchedulerProvider().ui()).
+                subscribe(aBoolean -> {
+                    updateQuestionsAnsweredCount();
                 }, throwable -> {
                     getNavigator().handleError(throwable);
-                })
-        );*/
+                }));
+    }
+
+
+    private void updateQuestionsAnsweredCount() {
+        getCompositeDisposable().add(getDataManager().
+                getAnsweredQuestionsCount().
+                subscribeOn(getSchedulerProvider().io()).
+                observeOn(getSchedulerProvider().ui()).
+                subscribe((integer, throwable) -> {
+                    if (throwable == null) {
+                        questionsAnswered.set("Questions Answered:" + integer + "/6");
+                    } else {
+                        getNavigator().handleError(throwable);
+                    }
+                }));
+    }
+
+
+    public void logout() {
+        setIsLoading(true);
         getCompositeDisposable().add(getDataManager().doLogoutApiCall()
                 .doOnSuccess(response -> {
                     getDataManager().setUserAsLoggedOut();

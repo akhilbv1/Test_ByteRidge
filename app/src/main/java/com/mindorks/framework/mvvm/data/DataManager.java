@@ -33,13 +33,11 @@ public interface DataManager extends DbHelper, PreferencesHelper, ApiHelper {
 
     Observable<List<QuestionCardData>> getQuestionCardData();
 
+    Observable<List<QuestionCardData>> getAnsweredQuestionCardData();
+
     Observable<Boolean> seedDatabaseOptions();
 
     Observable<Boolean> seedDatabaseQuestions();
-
-    Observable<Integer> deleteQuestionsAndOptions(List<Question> questions);
-
-    Observable<Integer> deleteOptions(List<Option> optionList);
 
     void setUserAsLoggedOut();
 

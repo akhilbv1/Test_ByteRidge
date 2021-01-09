@@ -37,12 +37,15 @@ import com.mindorks.framework.mvvm.data.remote.ApiHeader;
 import com.mindorks.framework.mvvm.data.remote.ApiHelper;
 import com.mindorks.framework.mvvm.utils.AppConstants;
 import com.mindorks.framework.mvvm.utils.CommonUtils;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+
 import java.lang.reflect.Type;
 import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Created by amitshekhar on 07/07/17.
@@ -195,6 +198,15 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<List<QuestionCardData>> getAnsweredQuestionCardData() {
+        return mDbHelper.getAllAnsweredQuestions().
+                flatMap(questions -> Observable.fromIterable(questions)).
+                flatMap(question -> Observable.zip(mDbHelper.getOptionsForQuestionId(question.id), Observable.just(question),
+                        (options, question1) -> new QuestionCardData(question1, options))).
+                toList().toObservable();
+    }
+
+    @Override
     public Observable<Boolean> insertUser(User user) {
         return mDbHelper.insertUser(user);
     }
@@ -229,26 +241,34 @@ public class AppDataManager implements DataManager {
         return mDbHelper.saveQuestionList(questionList);
     }
 
+
+
     @Override
-    public Observable<Integer> deletAllQuestions(List<Question> questionList) {
-        return mDbHelper.deletAllQuestions(questionList);
+    public Observable<List<Question>> getAllAnsweredQuestions() {
+        return mDbHelper.getAllAnsweredQuestions();
     }
 
     @Override
-    public Observable<Integer> deleteAllOptions(List<Option> optionList) {
-        return mDbHelper.deleteAllOptions(optionList);
+    public Observable<Boolean> saveAnsweredQuestion(Question question) {
+        return mDbHelper.saveAnsweredQuestion(question);
     }
 
     @Override
-    public Observable<List<Option>> getAllOptions() {
-        return mDbHelper.getAllOptions();
+    public Single<Integer> getAnsweredQuestionsCount() {
+        return mDbHelper.getAnsweredQuestionsCount();
+
+    }
+
+    @Override
+    public Observable<Boolean> resetAllQuestions() {
+        return mDbHelper.resetAllQuestions();
     }
 
     @Override
     public Observable<Boolean> seedDatabaseOptions() {
         return mDbHelper.isOptionEmpty()
                 .concatMap(isEmpty -> {
-                    Log.d(TAG,"seedDatabaseOptions isEmpty "+isEmpty);
+                    Log.d(TAG, "seedDatabaseOptions isEmpty " + isEmpty);
                     if (isEmpty) {
                         Type type = new TypeToken<List<Option>>() {
                         }.getType();
@@ -263,7 +283,7 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseQuestions() {
         return mDbHelper.isQuestionEmpty()
                 .concatMap(isEmpty -> {
-                    Log.d(TAG,"seedDatabaseQuestions isEmpty "+isEmpty);
+                    Log.d(TAG, "seedDatabaseQuestions isEmpty " + isEmpty);
                     if (isEmpty) {
                         Type type = $Gson$Types.newParameterizedTypeWithOwner(null, List.class, Question.class);
                         List<Question> questionList = mGson
@@ -274,15 +294,7 @@ public class AppDataManager implements DataManager {
                 });
     }
 
-    @Override
-    public Observable<Integer> deleteQuestionsAndOptions(List<Question> questions) {
-        return mDbHelper.deletAllQuestions(questions);
-    }
 
-    @Override
-    public Observable<Integer> deleteOptions(List<Option> optionList) {
-        return mDbHelper.deleteAllOptions(optionList);
-    }
 
     @Override
     public void setUserAsLoggedOut() {

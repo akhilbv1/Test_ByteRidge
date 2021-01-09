@@ -20,6 +20,8 @@ import com.mindorks.framework.mvvm.data.model.db.Option;
 import com.mindorks.framework.mvvm.data.model.db.Question;
 import com.mindorks.framework.mvvm.data.model.db.User;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+
 import java.util.List;
 
 /**
@@ -48,9 +50,11 @@ public interface DbHelper {
 
     Observable<Boolean> saveQuestionList(List<Question> questionList);
 
-    Observable<Integer> deletAllQuestions(List<Question> questionList);
+    Observable<List<Question>> getAllAnsweredQuestions();
 
-    Observable<Integer> deleteAllOptions(List<Option> optionList);
+    Observable<Boolean> saveAnsweredQuestion(Question question);
 
-    Observable<List<Option>> getAllOptions();
+    Single<Integer> getAnsweredQuestionsCount();
+
+    Observable<Boolean> resetAllQuestions();
 }

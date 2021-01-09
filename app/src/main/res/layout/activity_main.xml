@@ -26,6 +26,10 @@
             name="viewModel"
             type="com.mindorks.framework.mvvm.ui.main.MainViewModel" />
 
+        <variable
+            name="navigator"
+            type="com.mindorks.framework.mvvm.ui.main.MainActivity" />
+
     </data>
 
 
@@ -72,12 +76,26 @@
 
                     </com.google.android.material.appbar.AppBarLayout>
 
+                    <TextView
+                        android:id="@+id/tvQuestionNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="questions answere:-1/10"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:gravity="center"
+                        android:text="@{viewModel.questionsAnswered}"
+                        android:layout_marginTop="15dp"
+                        />
+
                     <com.mindorks.placeholderview.SwipePlaceHolderView
                         android:id="@+id/cardsContainer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:action="@{viewModel.action}"
-                        app:adapter="@{viewModel.questionDataList}" />
+                        app:adapter="@{viewModel.questionDataList}"
+                        app:navigator="@{navigator}" />
 
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -43,10 +43,6 @@ public interface OptionDao {
     @Query("SELECT * FROM options")
     Single<List<Option>> loadAll();
 
-
-    @Query("SELECT * FROM options")
-    List<Option> loadAllOptions();
-
     @Query("SELECT * FROM options WHERE question_id = :questionId")
     Single<List<Option>> loadAllByQuestionId(Long questionId);
 
