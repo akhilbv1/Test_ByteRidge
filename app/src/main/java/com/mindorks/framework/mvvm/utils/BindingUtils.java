@@ -26,6 +26,8 @@ import com.mindorks.framework.mvvm.data.model.others.QuestionCardData;
 import com.mindorks.framework.mvvm.ui.feed.blogs.BlogAdapter;
 import com.mindorks.framework.mvvm.ui.feed.opensource.OpenSourceAdapter;
 import com.mindorks.framework.mvvm.ui.feed.opensource.OpenSourceItemViewModel;
+import com.mindorks.framework.mvvm.ui.main.MainActivity;
+import com.mindorks.framework.mvvm.ui.main.MainNavigator;
 import com.mindorks.framework.mvvm.ui.main.MainViewModel;
 import com.mindorks.framework.mvvm.ui.main.QuestionCard;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
@@ -59,14 +61,14 @@ public final class BindingUtils {
         }
     }
 
-    @BindingAdapter({"adapter", "action"})
-    public static void addQuestionItems(SwipePlaceHolderView mCardsContainerView, List<QuestionCardData> mQuestionList, int mAction) {
+    @BindingAdapter({"adapter", "action","navigator"})
+    public static void addQuestionItems(SwipePlaceHolderView mCardsContainerView, List<QuestionCardData> mQuestionList, int mAction, MainNavigator mainNavigator) {
         if (mAction == MainViewModel.ACTION_ADD_ALL) {
             if (mQuestionList != null) {
                 mCardsContainerView.removeAllViews();
                 for (QuestionCardData question : mQuestionList) {
-                    if (question != null && question.options != null) {
-                        mCardsContainerView.addView(new QuestionCard(question));
+                    if (question != null && question.options != null && mainNavigator!=null) {
+                        mCardsContainerView.addView(new QuestionCard(question, mainNavigator));
                     }
                 }
                 ViewAnimationUtils.scaleAnimateView(mCardsContainerView);

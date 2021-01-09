@@ -21,6 +21,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import com.mindorks.framework.mvvm.data.model.db.Question;
 import java.util.List;
 
@@ -41,6 +43,16 @@ public interface QuestionDao {
     @Query("SELECT * FROM questions")
     Single<List<Question>> loadAll();
 
-    @Query("DELETE FROM QUESTIONS")
-    int deleteAl();
+    @Query("SELECT * FROM questions WHERE hasAnswered=:hasAnswered")
+    Single<List<Question>> loadAllAnsweredQuestions(Boolean hasAnswered);
+
+    @Update
+    void updateQuestion(Question question);
+
+    @Query("UPDATE questions SET hasAnswered=:hasAnswered")
+    void resetAllQuestions(Boolean hasAnswered);
+
+    @Query("SELECT COUNT(hasAnswered=:hasAnswered) FROM QUESTIONS WHERE hasAnswered=:hasAnswered")
+    Single<Integer> getCount(Boolean hasAnswered);
+
 }

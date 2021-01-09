@@ -16,6 +16,8 @@
 
 package com.mindorks.framework.mvvm.ui.main;
 
+import com.mindorks.framework.mvvm.data.model.others.QuestionCardData;
+
 /**
  * Created by amitshekhar on 09/07/17.
  */
@@ -25,4 +27,6 @@ public interface MainNavigator {
     void handleError(Throwable throwable);
 
     void openLoginActivity();
+
+    void onClickQuestionCard(QuestionCardData questionCardData);
 }

@@ -24,6 +24,7 @@ import com.mindorks.framework.mvvm.ui.feed.opensource.OpenSourceFragmentProvider
 import com.mindorks.framework.mvvm.ui.login.LoginActivity;
 import com.mindorks.framework.mvvm.ui.main.MainActivity;
 import com.mindorks.framework.mvvm.ui.main.rating.RateUsDialogProvider;
+import com.mindorks.framework.mvvm.ui.questionhistory.QuestionsHistoryActivity;
 import com.mindorks.framework.mvvm.ui.splash.SplashActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -50,4 +51,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract SplashActivity bindSplashActivity();
+
+    @ContributesAndroidInjector
+    abstract QuestionsHistoryActivity bindQuestionHistoryActivity();
 }

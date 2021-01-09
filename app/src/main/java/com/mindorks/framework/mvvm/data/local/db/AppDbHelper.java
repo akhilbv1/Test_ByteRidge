@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Created by amitshekhar on 07/07/17.
@@ -139,33 +140,32 @@ public class AppDbHelper implements DbHelper {
         });
     }
 
+
+
     @Override
-    public Observable<Integer> deletAllQuestions(List<Question> questionList) {
-        return Observable.fromCallable(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return mAppDatabase.questionDao().deleteAl();
-            }
-        });
+    public Observable<List<Question>> getAllAnsweredQuestions() {
+        return mAppDatabase.questionDao().loadAllAnsweredQuestions(true).toObservable();
     }
 
     @Override
-    public Observable<Integer> deleteAllOptions(List<Option> optionList) {
-        return Observable.fromCallable(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return mAppDatabase.optionDao().deleteAl();
-            }
+    public Observable<Boolean> saveAnsweredQuestion(Question question) {
+        return Observable.fromCallable(() -> {
+            mAppDatabase.questionDao().updateQuestion(question);
+            return true;
         });
     }
 
+
     @Override
-    public Observable<List<Option>> getAllOptions() {
-        return Observable.fromCallable(new Callable<List<Option>>() {
-            @Override
-            public List<Option> call() throws Exception {
-                return mAppDatabase.optionDao().loadAllOptions();
-            }
+    public Single<Integer> getAnsweredQuestionsCount() {
+        return mAppDatabase.questionDao().getCount(true);
+    }
+
+    @Override
+    public Observable<Boolean> resetAllQuestions() {
+        return Observable.fromCallable(() -> {
+            mAppDatabase.questionDao().resetAllQuestions(false);
+            return true;
         });
     }
 }

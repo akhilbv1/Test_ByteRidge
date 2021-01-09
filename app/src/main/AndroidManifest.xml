@@ -47,6 +47,12 @@
             android:launchMode="singleTop" />
 
         <activity
+            android:name=".ui.questionhistory.QuestionsHistoryActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.main.MainActivity"/>
+
+
+        <activity
             android:name="com.mindorks.framework.mvvm.ui.feed.FeedActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.main.MainActivity">

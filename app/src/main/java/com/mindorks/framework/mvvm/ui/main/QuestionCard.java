@@ -58,11 +58,16 @@ public class QuestionCard {
 
     private QuestionCardData mQuestionCardData;
 
+    private MainNavigator navigator;
+
     @View(R.id.tv_question_txt)
     private TextView mQuestionTextView;
 
-    public QuestionCard(QuestionCardData questionCardData) {
+
+
+    public QuestionCard(QuestionCardData questionCardData,MainNavigator mainNavigator) {
         mQuestionCardData = questionCardData;
+        navigator = mainNavigator;
     }
 
     @Click(R.id.btn_option_1)
@@ -94,7 +99,7 @@ public class QuestionCard {
             showCorrectOptions();
         }
 
-        for (int i = 0; i < mQuestionCardData.options.size(); i++) {
+        for (int i = 0; i < 4; i++) {
             Button button = null;
             switch (i) {
                 case 0:
@@ -113,8 +118,12 @@ public class QuestionCard {
             }
 
             if (button != null) {
-                button.setText( mQuestionCardData.options.get(i).optionText);
-                button.setVisibility(android.view.View.VISIBLE);
+                if(i<=mQuestionCardData.options.size()-1){
+                    button.setText( mQuestionCardData.options.get(i).optionText);
+                    button.setVisibility(android.view.View.VISIBLE);
+                }else {
+                    button.setVisibility(android.view.View.INVISIBLE);
+                }
             }
 
             if (mQuestionCardData.question.imgUrl != null) {
@@ -124,6 +133,7 @@ public class QuestionCard {
     }
 
     private void showCorrectOptions() {
+        navigator.onClickQuestionCard(mQuestionCardData);
         mQuestionCardData.mShowCorrectOptions = true;
         for (int i = 0; i < mQuestionCardData.options.size(); i++) {
             Option option = mQuestionCardData.options.get(i);
